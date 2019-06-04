@@ -17,12 +17,12 @@ const (
 )
 
 type BufferData struct {
-	id uint32
+	id string
 	fileName string
-	bufferSize uint32
+	bufferSize string
 }
 
-func (buf *BufferData) Id() uint32 {
+func (buf *BufferData) Id() string {
 	return buf.id
 }
 
@@ -30,7 +30,7 @@ func (buf *BufferData) FileName() string {
 	return buf.fileName
 }
 
-func (buf *BufferData) BufferSize() uint32 {
+func (buf *BufferData) BufferSize() string {
 	return buf.bufferSize
 }
 
@@ -39,7 +39,7 @@ type dataEndpointResult struct {
 }
 
 type dataEndpointEntry struct {
-	Id uint32		`json:"id"`
+	Id string		`json:"id"`
 	FileName string `json:"file"`
 }
 
@@ -48,8 +48,8 @@ type buffersEndpointResult struct {
 }
 
 type buffersEndpointEntry struct {
-	Id uint32			`json:"id"`
-	BufferSize uint32	`json:"dataSize"`
+	Id string			`json:"id"`
+	BufferSize string	`json:"dataSize"`
 }
 
 func ReadBuffersData(config config.Config) ([]BufferData, error) {
@@ -59,14 +59,14 @@ func ReadBuffersData(config config.Config) ([]BufferData, error) {
 		return nil, err
 	}
 
-	dataMap := make(map[int]*BufferData)
+	dataMap := make(map[string]*BufferData)
 
 	for i := range dataResult.Data {
 		entry := dataResult.Data[i]
-		dataMap[int(entry.Id)] = &BufferData{
+		dataMap[entry.Id] = &BufferData{
 			id: entry.Id,
 			fileName: entry.FileName,
-			bufferSize: 0,
+			bufferSize: "",
 		}
 	}
 
@@ -78,7 +78,7 @@ func ReadBuffersData(config config.Config) ([]BufferData, error) {
 
 	for i := range buffersResult.Data {
 		entry := buffersResult.Data[i]
-		bufferData, present := dataMap[int(entry.Id)]
+		bufferData, present := dataMap[entry.Id]
 
 		if present {
 			bufferData.bufferSize = entry.BufferSize

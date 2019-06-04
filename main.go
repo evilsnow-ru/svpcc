@@ -68,7 +68,7 @@ func printBuffers(cfg config.Config) {
 
 	for i := 0; i < len(data); i++ {
 		entry := data[i]
-		fmt.Println(fmt.Sprintf(" | %12d | %-23s | %17d |", entry.Id(), entry.FileName(), entry.BufferSize()))
+		fmt.Println(fmt.Sprintf(" | %12s | %-23s | %17s |", entry.Id(), entry.FileName(), entry.BufferSize()))
 	}
 
 	fmt.Println(" +--------------+-------------------------+-------------------+ ")

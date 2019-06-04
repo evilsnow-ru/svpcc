@@ -4,6 +4,7 @@ import (
 	"bufio"
 	"fmt"
 	"os"
+	"runtime"
 	"strings"
 )
 
@@ -21,7 +22,16 @@ func (r StdioReader) Read() ([]string, error) {
 	} else {
 		splitted := strings.Split(string(data), " ")
 		idx := len(splitted) - 1
-		splitted[idx] = strings.Trim(splitted[idx], "\n")
+
+		var cutstring string
+
+		if runtime.GOOS == "windows" {
+			cutstring = "\r\n"
+		} else {
+			cutstring = "\n"
+		}
+
+		splitted[idx] = strings.Trim(splitted[idx], cutstring)
 		return splitted, nil
 	}
 }
