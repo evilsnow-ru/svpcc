@@ -17,7 +17,8 @@ func main() {
 		cmdArray, err := cli.Read()
 
 		if err != nil {
-			panic(err.Error())
+			fmt.Println(err.Error())
+			break loop
 		}
 
 		if len(cmdArray) >= 1 {
@@ -48,16 +49,31 @@ func evaluateGetCommand(strings []string, cfg config.Config) {
 	switch subCommand {
 	case "buffers":
 		printBuffers(cfg)
+	case "status":
+		getStatus(cfg)
 	default:
 		fmt.Println("Command not found")
 	}
+}
+
+func getStatus(cfg config.Config) {
+	status, err := rest.GetStatus(cfg)
+
+	if err != nil {
+		fmt.Println(err.Error())
+		return
+	}
+
+	fmt.Println("Server status: " + status)
+	fmt.Println(" ")
 }
 
 func printBuffers(cfg config.Config) {
 	data, err := rest.ReadBuffersData(cfg)
 
 	if err != nil {
-		panic(err.Error())
+		fmt.Println(err.Error())
+		return
 	}
 
 	fmt.Println(" ")
