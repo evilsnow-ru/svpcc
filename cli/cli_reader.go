@@ -20,7 +20,7 @@ func (r StdioReader) Read() ([]string, error) {
 	if err != nil {
 		return nil, err
 	} else {
-		splitted := strings.Split(string(data), " ")
+		splitted := strings.Split(strings.TrimSpace(string(data)), " ")
 		idx := len(splitted) - 1
 
 		var cutstring string

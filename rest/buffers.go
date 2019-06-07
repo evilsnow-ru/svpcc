@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"log"
 	"net/http"
+	"sort"
+	"strconv"
 	"strings"
 	"svpcc/config"
 )
@@ -90,6 +92,12 @@ func ReadBuffersData(config config.Config) ([]BufferData, error) {
 	for key := range dataMap {
 		result = append(result, *dataMap[key])
 	}
+
+	sort.Slice(result, func (i, j int) bool {
+		id1, _ := strconv.Atoi(result[i].Id())
+		id2, _ := strconv.Atoi(result[j].Id())
+		return id1 < id2
+	})
 
 	return result, nil
 }
